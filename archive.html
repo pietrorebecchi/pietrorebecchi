@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "UTF-8"/>
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0"/>
+        <title>Pietro Rebecchi</title>
+            <!-- Tailwind CSS -->
+        <link
+        href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.17/dist/tailwind.min.css"
+        rel="stylesheet"
+        />
+        <style>
+            body {
+                font-family: "SF Mono", "Apple System UI Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+            }
+        </style>
+        <!-- KaTeX for rendering math formulas -->
+        <link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+        <script defer src = "https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+        <script defer src = "https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"
+                onload = "renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <!-- Navigation Menu -->
+        <nav class = "navigation menu bg-white p-5 shadow" style = "background-color: white;">
+            <div class = "container menu container mx-auto flex justify-end items-center">
+                <a href = "index.html" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">Home</a>
+                <a href = "archive.html" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">Archive</a>
+                <a href = "CV.pdf" target = "_blank" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">CV</a>
+            </div>
+        </nav>
+
+        <!-- <div class = "container mx-auto px-12 py-8"> -->
+        <div class = "container mx-auto px-4 sm:px-4 md:px-12 py-8">
+            <div class = "bg-white rounded-lg p-8 md:px-24 px-8">
+                <!-- Archive List Mode -->
+                <div id = "archive-list">
+                <h1 class = "text-3xl font-semibold mb-6 text-center">Archive</h1>
+                <ul class = "space-y-4">
+                    <!-- Post 1 -->
+                    <li>
+                    <a href = "archive.html?post=post1" class = "block">
+                        <span style = "color: #1e39d0;" class = "text-md">A Blog: Why & How</span>
+                        <p class="text-gray-600 text-md">The origin of this blog</p>
+                        <p class="text-gray-600 text-sm">Date: 21/02/2025</p>
+                        <p class="text-gray-600 text-sm">Blog</p>
+                    </a>
+                    </li>
+                    <li>
+                    <a href = "archive.html?post=post2" class = "block">
+                        <span style = "color: #1e39d0;" class = "text-md">Student in Copenhagen</span>
+                        <p class="text-gray-600 text-md">The origin of this blog</p>
+                        <p class="text-gray-600 text-sm">Date: 21/02/2025</p>
+                        <p class="text-gray-600 text-sm">Denmark</p>
+                    </a>
+                    </li>
+                </ul>
+                </div>
+
+        <!-- Post View Mode (hidden by default) -->
+        <div id = "post-view" style = "display: none;">
+            <h1 id = "post-title" class = "text-3xl font-semibold mb-6 text-center"></h1>
+            <!-- The "prose" class applies typographic defaults; inline style justifies text -->
+            <div id = "post-content" class = "text-gray-600 mx-auto max-w-4xl px-4 text-md" style = "text-align: justify;"></div>
+            <div id = "back-link" class = "mt-4 text-center"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer class = "bg-white fixed bottom-0 left-0 w-full text-black text-sm text-center">
+            &copy; 2025 Pietro Rebecchi
+        </footer>
+
+        <!-- Include Marked.js for Markdown parsing -->
+        <script src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        // Simple front matter parser to extract metadata from Markdown
+        function parseFrontMatter(text) {
+            if (text.startsWith('---')) {
+                const end = text.indexOf('---', 3);
+                if (end !== -1) {
+                    const frontMatter = text.substring(3, end).trim();
+                    const content = text.substring(end + 3).trim();
+                    const metadata = {};
+                    frontMatter.split('\n').forEach(line => {
+                        const parts = line.split(':');
+                        if (parts.length >= 2) {
+                            const key = parts[0].trim();
+                            const value = parts.slice(1).join(':').trim();
+                            metadata[key] = value;
+                        }
+                    });
+                    return { metadata, content };
+                }
+            }
+            return { metadata: {}, content: text };
+        }
+        // Check if a specific post is requested via the query parameter
+        const postName = getQueryParam("post");
+        if (postName) {
+            // Hide the archive list and show the post view
+            document.getElementById("archive-list").style.display = "none";
+            document.getElementById("post-view").style.display = "block";
+            fetch(postName + ".md")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Post not found");
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    const { metadata, content } = parseFrontMatter(text);
+                    let headerHtml = '';
+                    // If date is present, show date
+                    if (metadata.date) {
+                        headerHtml += `<p class = "text-gray-600 text-sm">Date: ${metadata.date}</p>`;
+                    }
+                    // If tags are present, show them individually with icons
+                    if (metadata.tags) {
+                    const tagList = metadata.tags.split(',').map(tag => tag.trim());
+                    // Decide the colors you want for the text and background
+                    const textColor = "#1e39d0";
+                    const bgColor = "#e4eaff";
+                    let tagHtml = tagList
+                        .map(tag => `<span style = "color: ${textColor}; background-color: ${bgColor};" class="inline-flex items-center px-2 py-1 text-sm rounded mr-2">
+                                    <i class = "fas fa-tag mr-1"></i>${tag}</span>`)
+                        .join('');
+                    headerHtml += `<div class = "mt-2 mb-2">${tagHtml}</div>`;
+                    }
+                    // Use the metadata title if available; otherwise, default to the query name
+                    document.getElementById("post-title").innerText =
+                        metadata.title || postName.replace(/post/i, "Blog Post ");
+                    // Insert the metadata header plus the rendered Markdown content
+                    document.getElementById("post-content").innerHTML = headerHtml + marked.parse(content);
+                    // Render math formulas inside the post content using KaTeX
+                    renderMathInElement(document.getElementById("post-content"), {
+                        delimiters: [
+                            { left: "$$", right: "$$", display: true },
+                            { left: "$", right: "$", display: false }
+                        ]
+                    });
+                // Conditional Back Link based on the "source" query parameter
+                const source = getQueryParam("source");
+                const backLinkDiv = document.getElementById("back-link");
+                const backLink = document.createElement("a");
+                backLink.className =
+                "inline-block text-black hover:text-gray-600 px-3 transform transition duration-200 hover:scale-105";
+                if (source === "index") {
+                backLink.href = "index.html";
+                backLink.innerHTML = "&larr; Back to Home";
+                } else {
+                backLink.href = "archive.html";
+                backLink.innerHTML = "&larr; Back to Archive";
+                }
+                backLinkDiv.appendChild(backLink);
+            })
+            .catch(error => {
+                document.getElementById("post-content").innerHTML = "<p>Error loading post.</p>";
+                console.error("Error fetching the markdown file:", error);
+            });
+        }
+        </script>
+    </body>
+</html>
