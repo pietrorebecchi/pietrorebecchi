@@ -5,15 +5,4 @@
     <loc>https://pietrorebecchi.vercel.app/</loc>
     <changefreq>weekly</changefreq>
   </url>
-  <!-- Post 1 -->
-  <url>
-    <loc>https://pietrorebecchi.vercel.app/?post=post1</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-  <!-- Post 2 -->
-  <url>
-    <loc>https://pietrorebecchi.vercel.app/?post=post2</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-  <!-- Add more <url> entries as you publish new posts -->
 </urlset>
