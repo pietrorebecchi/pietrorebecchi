@@ -5,10 +5,10 @@
         <meta charset = "UTF-8"/>
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0"/>
         <!-- meta descriptions -->
-        <meta name = "description" content = "Pietro Rebecchi's Blog: reflections on data science, geopolitics, life in Denmark and more, hoping to offer insights that might be attractive to you"/>
+        <meta name = "description" content = "Pietro Rebecchi's Blog: an open diary of thoughts and reflections on whatever captures my curiosity, hoping to offer insights that might be attractive to you."/>
         <!-- open graph -->
         <meta property = "og:title" content = "Pietro Rebecchi's Blog"/>
-        <meta property = "og:description" content = "Reflections on data science, geopolitics, life in Denmark and more, hoping to offer insights that might be attractive to you"/>
+        <meta property = "og:description" content = "An open diary of thoughts and reflections on whatever captures my curiosity, hoping to offer insights that might be attractive to you."/>
         <meta property = "og:url" content = "https://pietrorebecchi.vercel.app/"/>
         <meta property = "og:type" content = "website"/>
         <title>Pietro Rebecchi's Blog</title>
@@ -38,10 +38,10 @@
         <div class = "text-center mb-2">
             <h3 class = "text-3xl font-semibold mb-2">About Me</h3>
             <p class = "text-gray-600">
-                Hi, my name is Pietro. I'm a Data Science student at <a href = "https://en.itu.dk/" class = "inline-block transition-colors duration-200 hover:bg-yellow-100">IT University of Copenhagen</a>.
+                Hi, I'm Pietro - a Data Science student at <a href = "https://en.itu.dk/" class = "inline-block transition-colors duration-200 hover:bg-yellow-100">IT University of Copenhagen</a>.
             </p>
             <p id = "blogpurpose" class = "text-gray-600">
-                In this blog, I write about subjects that I find interesting, hoping to offer insights that might be attractive to someone - for example, discussion regarding <span id = "topic">various aspects of data science</span>.
+                In this blog, I write about topics I find interesting - including but not limited to <span id = "topic"> data science </span> - hoping to offer insights that might be attractive to someone.
             </p>
         </div>
 
@@ -59,18 +59,18 @@
                 </a>
                 <!-- Second Post -->
                 <a href = "archive.html?post=post2&source=index" class = "block bg-gray-100 p-4 rounded-lg">
-                    <span style = "color: #1e39d0;" class = "text-md">Coming soon...</span>
-                    <p class = "text-gray-600 text-sm">...</p>
-                    <p class = "text-gray-600 text-sm">...</p>
-                    <p class = "text-gray-600 text-sm">...</p>
+                    <span style = "color: #1e39d0;" class = "text-md">Coming soon<span class = "animated-dots">...</span></span>
+                    <p class = "text-gray-600 text-sm"> </p>
+                    <p class = "text-gray-600 text-sm"> </p>
+                    <p class = "text-gray-600 text-sm"> </p>
                 </a>
                 <!-- Third Post -->
                 <a href = "archive.html?post=post3&source=index" class = "block bg-gray-100 p-4 rounded-lg">
-                    <span style = "color: #1e39d0;" class = "text-md">Coming soon...</span>
-                    <p class = "text-gray-600 text-sm">...</p>
-                    <p class = "text-gray-600 text-sm">...</p>
+                    <span style = "color: #1e39d0;" class = "text-md">Coming soon<span class = "animated-dots">...</span> </span>
+                    <p class = "text-gray-600 text-sm"> </p>
+                    <p class = "text-gray-600 text-sm"> </p>
                     <p class = "text-gray-600 text-sm">
-                        <i clas s = "fas fa-tag mr-1"></i>...
+                        <i class = "fas fa-tag mr-1"></i>
                     </p>
                 </a>
             </div>
@@ -111,7 +111,7 @@
               }
             }
             // Names to alternate between
-            const names = ["various aspects of data science", "geopolitics", "life in Denmark", "much more"];
+            const names = ["data science", "geopolitics", "life in Denmark"];
             let currentIndex = 0;
             // Cycle through names repeatedly
             async function cycleNames() {
@@ -119,11 +119,22 @@
                 let nextIndex = (currentIndex + 1) % names.length;
                 await animateNameTransition(names[nextIndex]);
                 currentIndex = nextIndex;
-                await wait(2000); // pause after transition before next cycle
+                await wait(2500); // pause after transition before next cycle
               }
             }
             // Start the name cycling animation
             cycleNames();
+      </script>
+      <script>
+      // Animate every <span class="animated-dots">
+      document.querySelectorAll(".animated-dots").forEach(el => {
+        let count = 0;
+        setInterval(() => {
+          // cycle 0,1,2,3 dots
+          count = (count + 1) % 4;
+          el.textContent = '.'.repeat(count);
+        }, 500); // change “500” to speed up/slower
+      });
       </script>
     </body>
 </html>
