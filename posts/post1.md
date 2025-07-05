@@ -1,10 +1,9 @@
 ---
-title: Genesis: Why, What & How
-date: 05/07/2025
+title: A Blog: Why, What & How
+date: 5/07/2025
 tags: Blog
 ---
-<br>
-<img src = "images/image.png"  alt = "Blog Cover" class = "mx-auto w-3/5 mb-2 rounded-lg"/>
+<img src = "image.png" alt = "Blog Cover" class = "mx-auto mb-6 rounded-lg"/>
 <br>
 Ciao!
 <br>

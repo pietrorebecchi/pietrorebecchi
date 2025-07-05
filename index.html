@@ -22,14 +22,28 @@
                 font-family: "SF Mono", "Apple System UI Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
             }
         </style>
-    </head> 
+        <style>
+            @keyframes wave {
+              0%, 100% { transform: rotate(0deg); }
+              15% { transform: rotate(14deg); }
+              30% { transform: rotate(-8deg); }
+              45% { transform: rotate(14deg); }
+              60% { transform: rotate(-4deg); }
+            }
+            .wave {
+              display: inline-block;
+              transform-origin: 70% 70%;
+              animation: wave 5s;
+            }
+        </style>
+    </head>
     <body>
         <!-- Navigation Menu -->
         <nav class = "navigation menu bg-white p-5 shadow" style = "background-color: white;">
             <div class = "container menu container mx-auto flex justify-end items-center">
                 <a href = "index.html" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">Home</a>
                 <a href = "archive.html" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">Archive</a>
-                <a href = "CV.pdf" target = "_blank" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">CV</a>
+                <a href = "CV.pdf" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">CV</a>
             </div>
         </nav>
         <div class = "container mx-auto px-12 py-8">
@@ -38,10 +52,12 @@
         <div class = "text-center mb-2">
             <h3 class = "text-3xl font-semibold mb-2">About Me</h3>
             <p class = "text-gray-600">
-                Hi, I'm Pietro - a Data Science student at <a href = "https://en.itu.dk/" class = "inline-block transition-colors duration-200 hover:bg-yellow-100">IT University of Copenhagen</a>.
+                Hi, I'm Pietro 
+                <span class = "wave text-3xl ml-1">👋🏼</span>
+                - a Data Science student at <a href = "https://en.itu.dk/" class = "inline-block no-underline hover:underline" target = "_blank" rel = "noopener noreferrer" style = "color: #1e39d0;">IT University of Copenhagen</a>.
             </p>
             <p id = "blogpurpose" class = "text-gray-600">
-                In this blog, I write about topics I find interesting - including but not limited to <span id = "topic"> data science </span> - hoping to offer insights that might be attractive to someone.
+                This blog is an open diary of thoughts and reflections on whatever captures my curiosity - including, but not limited to, <span id = "topic"> data science </span> - hoping to offer insights that might be attractive to someone.
             </p>
         </div>
 
@@ -52,8 +68,9 @@
             <div class = "grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- First Post -->
                 <a href = "archive.html?post=post1&source=index" class = "block bg-gray-100 p-4 rounded-lg">
-                    <span style = "color: #1e39d0;" class = "text-md">A Blog: Why & How</span>
-                    <p class = "text-gray-600 text-sm">The origin of this blog</p>
+                    <span style = "color: #1e39d0;" class = "text-md">Genesis: Why, What & How
+</span>
+                    <p class = "text-gray-600 text-sm">The genesis of this blog</p>
                     <p class = "text-gray-600 text-sm">Date: 21/02/2025</p>
                     <p class = "text-gray-600 text-sm">Blog</p>
                 </a>
@@ -70,7 +87,6 @@
                     <p class = "text-gray-600 text-sm"> </p>
                     <p class = "text-gray-600 text-sm"> </p>
                     <p class = "text-gray-600 text-sm">
-                        <i class = "fas fa-tag mr-1"></i>
                     </p>
                 </a>
             </div>
@@ -111,7 +127,7 @@
               }
             }
             // Names to alternate between
-            const names = ["data science", "geopolitics", "life in Denmark"];
+            const names = ["data science", "world news", "life in Denmark"];
             let currentIndex = 0;
             // Cycle through names repeatedly
             async function cycleNames() {

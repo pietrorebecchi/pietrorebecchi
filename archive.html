@@ -3,7 +3,7 @@
     <head>
         <meta charset = "UTF-8"/>
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0"/>
-        <title>Pietro Rebecchi</title>
+        <title>Pietro Rebecchi's Blog</title>
         <!-- Tailwind CSS -->
         <link
         href = "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.17/dist/tailwind.min.css"
@@ -26,7 +26,7 @@
             <div class = "container menu container mx-auto flex justify-end items-center">
                 <a href = "index.html" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">Home</a>
                 <a href = "archive.html" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">Archive</a>
-                <a href = "CV.pdf" target = "_blank" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">CV</a>
+                <a href = "CV.pdf" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">CV</a>
             </div>
         </nav>
 
@@ -40,10 +40,10 @@
                     <!-- Post 1 -->
                     <li>
                     <a href = "archive.html?post=post1" class = "block">
-                        <span style = "color: #1e39d0;" class = "text-md">A Blog: Why & How</span>
-                        <p class = "text-gray-600 text-md">The origin of this blog</p>
-                        <p class = "text-gray-600 text-sm">Date: 21/02/2025</p>
-                        <p class = "text-gray-600 text-sm">Blog</p>
+                    <span style = "color: #1e39d0;" class = "text-md">Genesis: Why, What & How</span>
+                    <p class = "text-gray-600 text-sm">The genesis of this blog</p>
+                    <p class = "text-gray-600 text-sm">Date: 05/07/2025</p>
+                    <p class = "text-gray-600 text-sm">Blog</p>
                     </a>
                     </li>
                 </ul>
@@ -63,7 +63,7 @@
         </footer>
 
         <!-- Include Marked.js for Markdown parsing -->
-        <script src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script>
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -72,86 +72,89 @@
         // Simple front matter parser to extract metadata from Markdown
         function parseFrontMatter(text) {
             if (text.startsWith('---')) {
-                const end = text.indexOf('---', 3);
-                if (end !== -1) {
-                    const frontMatter = text.substring(3, end).trim();
-                    const content = text.substring(end + 3).trim();
-                    const metadata = {};
-                    frontMatter.split('\n').forEach(line => {
-                        const parts = line.split(':');
-                        if (parts.length >= 2) {
-                            const key = parts[0].trim();
-                            const value = parts.slice(1).join(':').trim();
-                            metadata[key] = value;
-                        }
-                    });
-                    return { metadata, content };
+            const end = text.indexOf('---', 3);
+            if (end !== -1) {
+                const frontMatter = text.substring(3, end).trim();
+                const content = text.substring(end + 3).trim();
+                const metadata = {};
+                frontMatter.split('\n').forEach(line => {
+                const parts = line.split(':');
+                if (parts.length >= 2) {
+                    const key = parts[0].trim();
+                    const value = parts.slice(1).join(':').trim();
+                    metadata[key] = value;
                 }
+                });
+                return { metadata, content };
+            }
             }
             return { metadata: {}, content: text };
         }
-        // Check if a specific post is requested via the query parameter
+        // Helper to append Back link
+        function appendBackLink(source) {
+            const backLinkDiv = document.getElementById("back-link");
+            backLinkDiv.innerHTML = "";  // clear any previous
+            const backLink = document.createElement("a");
+            backLink.className =
+            "inline-block text-black hover:text-gray-600 px-3 transform transition duration-200 hover:scale-105";
+            if (source === "index") {
+            backLink.href = "index.html";
+            backLink.innerHTML = "&larr; Back to Home";
+            } else {
+            backLink.href = "archive.html";
+            backLink.innerHTML = "&larr; Back to Archive";
+            }
+            backLinkDiv.appendChild(backLink);
+        }
+        // Main loader
         const postName = getQueryParam("post");
         if (postName) {
-            // Hide the archive list and show the post view
+            const source = getQueryParam("source");
             document.getElementById("archive-list").style.display = "none";
             document.getElementById("post-view").style.display = "block";
-            fetch(postName + ".md")
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Post not found");
-                    }
-                    return response.text();
-                })
-                .then(text => {
-                    const { metadata, content } = parseFrontMatter(text);
-                    let headerHtml = '';
-                    // If date is present, show date
-                    if (metadata.date) {
-                        headerHtml += `<p class = "text-gray-600 text-sm">Date: ${metadata.date}</p>`;
-                    }
-                    // If tags are present, show them individually with icons
-                    if (metadata.tags) {
-                    const tagList = metadata.tags.split(',').map(tag => tag.trim());
-                    // Decide the colors you want for the text and background
-                    const textColor = "#1e39d0";
-                    const bgColor = "#e4eaff";
-                    let tagHtml = tagList
-                        .map(tag => `<span style = "color: ${textColor}; background-color: ${bgColor};" class="inline-flex items-center px-2 py-1 text-sm rounded mr-2">
-                                    <i class = "fas fa-tag mr-1"></i>${tag}</span>`)
-                        .join('');
-                    headerHtml += `<div class = "mt-2 mb-2">${tagHtml}</div>`;
-                    }
-                    // Use the metadata title if available; otherwise, default to the query name
-                    document.getElementById("post-title").innerText =
-                        metadata.title || postName.replace(/post/i, "Blog Post ");
-                    // Insert the metadata header plus the rendered Markdown content
-                    document.getElementById("post-content").innerHTML = headerHtml + marked.parse(content);
-                    // Render math formulas inside the post content using KaTeX
-                    renderMathInElement(document.getElementById("post-content"), {
-                        delimiters: [
-                            { left: "$$", right: "$$", display: true },
-                            { left: "$", right: "$", display: false }
-                        ]
-                    });
-                // Conditional Back Link based on the "source" query parameter
-                const source = getQueryParam("source");
-                const backLinkDiv = document.getElementById("back-link");
-                const backLink = document.createElement("a");
-                backLink.className =
-                "inline-block text-black hover:text-gray-600 px-3 transform transition duration-200 hover:scale-105";
-                if (source === "index") {
-                backLink.href = "index.html";
-                backLink.innerHTML = "&larr; Back to Home";
-                } else {
-                backLink.href = "archive.html";
-                backLink.innerHTML = "&larr; Back to Archive";
+
+            fetch(`${postName}.md`)
+            .then(response => {
+                if (!response.ok) throw new Error("Post not found");
+                return response.text();
+            })
+            .then(text => {
+                const { metadata, content } = parseFrontMatter(text);
+                let headerHtml = "";
+
+                if (metadata.date) {
+                headerHtml += `<p class="text-gray-600 text-sm">Date: ${metadata.date}</p>`;
                 }
-                backLinkDiv.appendChild(backLink);
+                if (metadata.tags) {
+                const tagList = metadata.tags.split(',').map(tag => tag.trim());
+                const textColor = "#1e39d0";
+                const bgColor = "#e4eaff";
+                const tagHtml = tagList.map(tag =>
+                    `<span style="color: ${textColor}; background-color: ${bgColor};" class="inline-flex items-center px-2 py-1 text-sm rounded mr-2">
+                    <i class="fas fa-tag mr-1"></i>${tag}
+                    </span>`
+                ).join('');
+                headerHtml += `<div class="mt-2 mb-2">${tagHtml}</div>`;
+                }
+                document.getElementById("post-title").innerText =
+                metadata.title || postName.replace(/post/i, "Blog Post ");
+                document.getElementById("post-content").innerHTML =
+                headerHtml + marked.parse(content);
+                renderMathInElement(document.getElementById("post-content"), {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "$", right: "$", display: false }
+                ]
+                });
+                // now append back link
+                appendBackLink(source);
             })
             .catch(error => {
-                document.getElementById("post-content").innerHTML = "<p>Error loading post :(</p>";
                 console.error("Error fetching the markdown file:", error);
+                document.getElementById("post-content").innerHTML =
+                "<p>Error loading post :(</p>";
+                // still append back link on error
+                appendBackLink(getQueryParam("source"));
             });
         }
         </script>
