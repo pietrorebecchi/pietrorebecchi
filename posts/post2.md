@@ -38,7 +38,7 @@ For example, I spend roughly 1,200 to 1,400 DKK (~160-190 euros) per month on gr
 <br>
 At least in my experience, going out for food in the way it's common in Italy isn't very typical in Denmark. It’s more about hanging out at someone’s place or going out for a drink rather than having a full meal out. On average, I’d say I spend around 300 DKK (~40 euros) per month on that.
 <br>
-You can bike all year round without having the need to use public transport. In fact, the bike infrastructure is amazing – bike lanes are wide, well separated from car traffic, and make it very easy to move around the city and even outside of it.
+You can bike all year round without having the need to use public transport. In fact, the bike infrastructure is amazing – bike lanes are wide, well separated from car traffic, and make it very easy to move around the city and even outside of it. Biking is possible in every season; however, it's good to know that winters in Copenhagen are a bit colder and windier than in Northern Italy, so dressing appropriately for the weather is crucial.
 <br>
 Since moving here, I've found myself appreciating things that are simple, free, and available to everyone - no need to spend money to enjoy them. There are things I now enjoy and value more than I did before — like walking with someone in the city center, taking an evening stroll through a park, going for a (cold) dip in the canals or sea, or biking along the coast.
 <h3>Some Practicalities</h3>
