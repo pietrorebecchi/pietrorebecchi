@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "UTF-8"/>
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0"/>
+        <title>Pietro Rebecchi's Blog</title>
+        <!-- Tailwind CSS -->
+        <link
+        href = "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.17/dist/tailwind.min.css"
+        rel = "stylesheet"
+        />
+        <style>
+            body {
+                font-family: "SF Mono", "Apple System UI Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+            }
+            #post-content h1 {
+                font-size: 2rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            #post-content h2 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            #post-content h3 {
+                font-size: 1.15rem;
+                font-weight: 600;
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            #post-content p {
+                margin-bottom: 1rem;
+            }
+
+            #post-content ul {
+                padding-left: 1.5rem;
+                list-style-type: disc;
+                margin-bottom: 1rem;
+            }
+
+            #post-content a {
+                text-decoration: underline;
+            }
+        </style>
+        <!-- KaTeX for rendering math formulas -->
+        <link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+        <script defer src = "https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+        <script defer src = "https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"
+                onload = "renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <!-- Navigation Menu -->
+        <nav class = "navigation menu bg-white p-5 shadow" style = "background-color: white;">
+            <div class = "container menu container mx-auto flex justify-end items-center">
+                <a href = "index.html" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">Home</a>
+                <a href = "archive.html" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">Archive</a>
+                <a href = "CV.pdf" class = "text-black hover:text-gray-500 px-3 transform transition duration-200 hover:scale-105">CV</a>
+            </div>
+        </nav>
+
+        <!-- <div class = "container mx-auto px-12 py-8"> -->
+        <div class = "container mx-auto px-4 sm:px-4 md:px-12 py-8">
+            <div class = "bg-white rounded-lg p-8 md:px-24 px-8">
+                <!-- Archive List Mode -->
+                <div id = "archive-list">
+                <h1 class = "text-3xl font-semibold mb-6 text-center">Archive</h1>
+                <ul class = "space-y-4">
+                    <!-- Post 1 -->
+                    <li>
+                    <a href = "archive.html?post=posts/post1" class = "block">
+                    <span style = "color: #1e39d0;" class = "text-md">Genesis: Why, What & How</span>
+                    <p class = "text-gray-600 text-sm">The genesis of this blog</p>
+                    <p class = "text-gray-600 text-sm">Date: 05/07/2025</p>
+                    <p class = "text-gray-600 text-sm">Blog</p>
+                    </a>
+                    </li>
+                    <li>
+                    <a href = "archive.html?post=posts/post2" class = "block">
+                    <span style = "color: #1e39d0;" class = "text-md">Studying in Copenhagen</span>
+                    <p class = "text-gray-600 text-sm">My experience studying in Copenhagen</p>
+                    <p class = "text-gray-600 text-sm">Date: 08/07/2025</p>
+                    <p class = "text-gray-600 text-sm">Denmark</p>
+                    </a>
+                    </li>
+                </ul>
+                </div>
+
+        <!-- Post View Mode (hidden by default) -->
+        <div id = "post-view" style = "display: none;">
+            <h1 id = "post-title" class = "text-3xl font-semibold mb-6 text-center"></h1>
+            <!-- The "prose" class applies typographic defaults; inline style justifies text -->
+            <div id = "post-content" class = "text-gray-600 mx-auto max-w-4xl px-4 text-md" style = "text-align: justify;"></div>
+            <div id = "back-link" class = "mt-4 text-center"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer class = "bg-white fixed bottom-0 left-0 w-full text-black text-sm text-center">
+            &copy; 2025 Pietro Rebecchi
+        </footer>
+
+        <!-- Include Marked.js for Markdown parsing -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        // Simple front matter parser to extract metadata from Markdown
+        function parseFrontMatter(text) {
+            if (text.startsWith('---')) {
+            const end = text.indexOf('---', 3);
+            if (end !== -1) {
+                const frontMatter = text.substring(3, end).trim();
+                const content = text.substring(end + 3).trim();
+                const metadata = {};
+                frontMatter.split('\n').forEach(line => {
+                const parts = line.split(':');
+                if (parts.length >= 2) {
+                    const key = parts[0].trim();
+                    const value = parts.slice(1).join(':').trim();
+                    metadata[key] = value;
+                }
+                });
+                return { metadata, content };
+            }
+            }
+            return { metadata: {}, content: text };
+        }
+        // Helper to append Back link
+        function appendBackLink(source) {
+            const backLinkDiv = document.getElementById("back-link");
+            backLinkDiv.innerHTML = "";  // clear any previous
+            const backLink = document.createElement("a");
+            backLink.className =
+            "inline-block text-black hover:text-gray-600 px-3 transform transition duration-200 hover:scale-105";
+            if (source === "index") {
+            backLink.href = "index.html";
+            backLink.innerHTML = "&larr; Back to Home";
+            } else {
+            backLink.href = "archive.html";
+            backLink.innerHTML = "&larr; Back to Archive";
+            }
+            backLinkDiv.appendChild(backLink);
+        }
+        // Main loader
+        const postName = getQueryParam("post");
+        if (postName) {
+            const source = getQueryParam("source");
+            document.getElementById("archive-list").style.display = "none";
+            document.getElementById("post-view").style.display = "block";
+
+            fetch(`${postName}.md`)
+            .then(response => {
+                if (!response.ok) throw new Error("Post not found");
+                return response.text();
+            })
+            .then(text => {
+                const { metadata, content } = parseFrontMatter(text);
+                let headerHtml = "";
+
+                if (metadata.date) {
+                headerHtml += `<p class="text-gray-600 text-sm">Date: ${metadata.date}</p>`;
+                }
+                if (metadata.tags) {
+                const tagList = metadata.tags.split(',').map(tag => tag.trim());
+                const textColor = "#1e39d0";
+                const bgColor = "#e4eaff";
+                const tagHtml = tagList.map(tag =>
+                    `<span style="color: ${textColor}; background-color: ${bgColor};" class="inline-flex items-center px-2 py-1 text-sm rounded mr-2">
+                    <i class="fas fa-tag mr-1"></i>${tag}
+                    </span>`
+                ).join('');
+                headerHtml += `<div class="mt-2 mb-2">${tagHtml}</div>`;
+                }
+                document.getElementById("post-title").innerText =
+                metadata.title || postName.replace(/post/i, "Blog Post ");
+                document.getElementById("post-content").innerHTML =
+                headerHtml + marked.parse(content);
+                renderMathInElement(document.getElementById("post-content"), {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "$", right: "$", display: false }
+                ]
+                });
+                // now append back link
+                appendBackLink(source);
+            })
+            .catch(error => {
+                console.error("Error fetching the markdown file:", error);
+                document.getElementById("post-content").innerHTML =
+                "<p>Error loading post :(</p>";
+                // still append back link on error
+                appendBackLink(getQueryParam("source"));
+            });
+        }
+        </script>
+    </body>
+</html>
