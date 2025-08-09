@@ -285,7 +285,7 @@
           if (mql && mql.addEventListener) {
             mql.addEventListener("change", (e) => {
               if (!localStorage.getItem(STORAGE_KEY)) {
-                applyTheme(e.matches ? "dark" : "light");
+                applyTheme("light"); // keep light as default unless dark is saved
               }
             });
           }

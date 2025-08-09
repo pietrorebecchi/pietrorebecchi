@@ -6,8 +6,7 @@
       (function () {
         try {
           const saved = localStorage.getItem("theme");
-          const wantsDark =
-            saved ? saved === "dark" : window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const wantsDark = saved === "dark"; // only dark if saved
           if (wantsDark) document.documentElement.classList.add("dark");
         } catch (e) {}
       })();
@@ -174,7 +173,6 @@
         return urlParams.get(param);
       }
 
-      // Simple front matter parser to extract metadata from Markdown
       function parseFrontMatter(text) {
         if (text.startsWith('---')) {
           const end = text.indexOf('---', 3);
@@ -196,7 +194,6 @@
         return { metadata: {}, content: text };
       }
 
-      // Append Back link (use accent color via global <a> styles)
       function appendBackLink(source) {
         const backLinkDiv = document.getElementById("back-link");
         backLinkDiv.innerHTML = "";
@@ -212,7 +209,6 @@
         backLinkDiv.appendChild(backLink);
       }
 
-      // Main loader
       const postName = getQueryParam("post");
       if (postName) {
         const source = getQueryParam("source");
@@ -288,8 +284,7 @@
         (function init() {
           let theme = localStorage.getItem(STORAGE_KEY);
           if (!theme) {
-            const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-            theme = prefersDark ? "dark" : "light";
+            theme = "light"; // always default to light
           }
           applyTheme(theme);
 
@@ -297,7 +292,7 @@
           if (mql && mql.addEventListener) {
             mql.addEventListener("change", (e) => {
               if (!localStorage.getItem(STORAGE_KEY)) {
-                applyTheme(e.matches ? "dark" : "light");
+                applyTheme("light"); // keep light if no saved theme
               }
             });
           }
