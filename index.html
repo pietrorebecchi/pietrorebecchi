@@ -6,8 +6,7 @@
       (function () {
         try {
           const saved = localStorage.getItem("theme");
-          const wantsDark =
-            saved ? saved === "dark" : window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const wantsDark = saved ? saved === "dark" : false;
           if (wantsDark) document.documentElement.classList.add("dark");
         } catch (e) {}
       })();
@@ -278,8 +277,7 @@
         (function init() {
           let theme = localStorage.getItem(STORAGE_KEY);
           if (!theme) {
-            const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-            theme = prefersDark ? "dark" : "light";
+            theme = "light";
           }
           applyTheme(theme);
 
